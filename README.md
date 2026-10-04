@@ -1,97 +1,86 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# MySpendTracker
 
-# Getting Started
+A simple, offline-first expense tracker and budget planner built with React Native and Expo.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+![MySpendTracker Logo](./assets/logo.png)
 
-## Step 1: Start Metro
+## 📱 About
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+MySpendTracker helps users take control of their finances by providing a clean, fast, and private way to track expenses, set budgets, and understand spending habits. The app works offline by default, with optional cloud sync for backup and multi-device access.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## ✨ Features
 
-```sh
-# Using npm
-npm start
+### Core Features
+- **Quick Expense Entry** – Add expenses in seconds with amount, category, date, and note
+- **Transaction History** – View all transactions sorted by date, filterable by day/week/month
+- **Category Management** – Pre-defined categories plus custom user categories
+- **Budget Planner** – Set monthly and per-category budgets with visual progress
+- **Dashboard** – At-a-glance view of monthly spending and remaining budget
 
-# OR using Yarn
-yarn start
-```
+### Advanced Features
+- **Charts & Reports** – Visual breakdowns of spending by category and time
+- **Recurring Transactions** – Automate tracking of rent, subscriptions, and bills
+- **Cloud Sync** – Optional backup and sync across devices (powered by Turso)
+- **Local PC Export** – Export data to CSV via local Wi-Fi connection
+- **Bill Reminders** – Push notifications for upcoming recurring bills
+- **Multiple Wallets** – Track expenses across Cash, Credit Card, and Bank accounts
 
-## Step 2: Build and run your app
+## 🛠️ Tech Stack
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+| Layer | Technology |
+| :--- | :--- |
+| Framework | React Native with Expo |
+| Navigation | Expo Router (file-based) |
+| Database | SQLite (expo-sqlite) |
+| Cloud Sync | Turso Offline Sync |
+| Ads | Google AdMob (react-native-google-mobile-ads) |
+| Local Server | react-native-pocket-server |
+| State Management | React Context + Zustand |
+| UI Components | Custom + React Native Paper |
+| Language | TypeScript |
 
-### Android
+## 📁 Project Structure
+myspendtracker/
+├── app/ # Expo Router: file-based routing
+│ ├── (tabs)/ # Main tab navigation
+│ │ ├── _layout.tsx # Tab bar configuration
+│ │ ├── index.tsx # Home/Dashboard Screen
+│ │ ├── transactions.tsx # Transaction History Screen
+│ │ ├── budget.tsx # Budget Screen
+│ │ └── settings.tsx # Settings Screen
+│ ├── add-expense.tsx # Modal for adding an expense
+│ ├── _layout.tsx # Root layout with providers
+│ └── +not-found.tsx
+├── src/
+│ ├── components/ # Reusable UI components
+│ │ ├── ui/ # Generic primitives (Button, Card, Input)
+│ │ └── finance/ # Finance-specific components
+│ ├── features/ # Feature-based modules
+│ │ ├── transactions/
+│ │ ├── budgets/
+│ │ ├── categories/
+│ │ └── backup/
+│ ├── lib/
+│ │ ├── db/ # SQLite schema and migrations
+│ │ ├── sync/ # Cloud sync configuration
+│ │ ├── local-server/ # Local PC export server
+│ │ ├── ads/ # AdMob components
+│ │ └── utils/ # Helper functions
+│ ├── hooks/ # Global custom hooks
+│ ├── constants/ # App-wide constants
+│ ├── types/ # TypeScript definitions
+│ └── providers/ # React Context providers
+├── assets/ # Images, fonts, icons
+├── app.json # Expo configuration
+├── package.json
+└── tsconfig.json
 
-```sh
-# Using npm
-npm run android
+text
 
-# OR using Yarn
-yarn android
-```
+## 🚀 Getting Started
 
-### iOS
+### Prerequisites
+- Node.js (v18 or later)
+- npm or yarn
+- Android Studio / Xcode for emulators
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

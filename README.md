@@ -38,49 +38,83 @@ MySpendTracker helps users take control of their finances by providing a clean, 
 | State Management | React Context + Zustand |
 | UI Components | Custom + React Native Paper |
 | Language | TypeScript |
+| Fonts | Inclusive Sans |
 
 ## 📁 Project Structure
+```
 myspendtracker/
-├── app/ # Expo Router: file-based routing
-│ ├── (tabs)/ # Main tab navigation
-│ │ ├── _layout.tsx # Tab bar configuration
-│ │ ├── index.tsx # Home/Dashboard Screen
-│ │ ├── transactions.tsx # Transaction History Screen
-│ │ ├── budget.tsx # Budget Screen
-│ │ └── settings.tsx # Settings Screen
-│ ├── add-expense.tsx # Modal for adding an expense
-│ ├── _layout.tsx # Root layout with providers
-│ └── +not-found.tsx
-├── src/
-│ ├── components/ # Reusable UI components
-│ │ ├── ui/ # Generic primitives (Button, Card, Input)
-│ │ └── finance/ # Finance-specific components
-│ ├── features/ # Feature-based modules
-│ │ ├── transactions/
-│ │ ├── budgets/
-│ │ ├── categories/
-│ │ └── backup/
-│ ├── lib/
-│ │ ├── db/ # SQLite schema and migrations
-│ │ ├── sync/ # Cloud sync configuration
-│ │ ├── local-server/ # Local PC export server
-│ │ ├── ads/ # AdMob components
-│ │ └── utils/ # Helper functions
-│ ├── hooks/ # Global custom hooks
-│ ├── constants/ # App-wide constants
-│ ├── types/ # TypeScript definitions
-│ └── providers/ # React Context providers
-├── assets/ # Images, fonts, icons
-├── app.json # Expo configuration
-├── package.json
-└── tsconfig.json
-
-text
+  ├── app/ # Expo Router: file-based routing
+  │ ├── (tabs)/ # Main tab navigation
+  │ │ ├── _layout.tsx # Tab bar configuration
+  │ │ ├── index.tsx # Home/Dashboard Screen
+  │ │ ├── transactions.tsx # Transaction History Screen
+  │ │ ├── budget.tsx # Budget Screen
+  │ │ └── settings.tsx # Settings Screen
+  │ ├── add-expense.tsx # Modal for adding an expense
+  │ ├── _layout.tsx # Root layout with providers
+  │ └── +not-found.tsx
+  ├── src/
+  │ ├── components/ # Reusable UI components
+  │ │ ├── ui/ # Generic primitives (Button, Card, Input)
+  │ │ └── finance/ # Finance-specific components
+  │ ├── features/ # Feature-based modules
+  │ │ ├── transactions/
+  │ │ ├── budgets/
+  │ │ ├── categories/
+  │ │ └── backup/
+  │ ├── lib/
+  │ │ ├── db/ # SQLite schema and migrations
+  │ │ ├── sync/ # Cloud sync configuration
+  │ │ ├── local-server/ # Local PC export server
+  │ │ ├── ads/ # AdMob components
+  │ │ └── utils/ # Helper functions
+  │ ├── hooks/ # Global custom hooks
+  │ ├── constants/ # App-wide constants
+  │ ├── types/ # TypeScript definitions
+  │ └── providers/ # React Context providers
+  ├── assets/ # Images, fonts, icons
+  │ └── fonts/ # Inclusive Sans .ttf files
+  ├── app.json # Expo configuration
+  ├── eas.json # EAS Build configuration
+  ├── babel.config.js # Babel configuration (path aliases)
+  ├── tsconfig.json # TypeScript configuration (path aliases)
+  ├── package.json
+  └── README.md
+```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or later)
-- npm or yarn
-- Android Studio / Xcode for emulators
 
+| Tool | Version | Install |
+| :--- | :--- | :--- |
+| Node.js | v18+ (v20 LTS recommended) | [nodejs.org](https://nodejs.org) |
+| npm | v9+ | Bundled with Node |
+| Yarn (optional) | v1.22+ | `npm i -g yarn` |
+| Expo CLI | Latest | `npm i -g expo-cli` |
+| EAS CLI | Latest | `npm i -g eas-cli` |
+| Watchman (macOS) | Latest | `brew install watchman` |
+| Android Studio | Latest | [developer.android.com](https://developer.android.com/studio) |
+| Xcode (macOS) | 15+ | Mac App Store |
+| JDK | 17 | `brew install openjdk@17` |
+| CocoaPods (iOS) | Latest | `sudo gem install cocoapods` |
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/myspendtracker.git
+cd myspendtracker
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Set Up Environment Variables
+Create a `.env` file at the project root:
+```bash
+cp .env.example .env
+```

@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/InclusiveSansBold.ttf",
+      "sha1": "0b0bf0911a5fa73419a1d341887ab4c9384139e2"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansBoldItalic.ttf",
+      "sha1": "59e86270d7db85e6449bbf608256aa94f5a45000"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansItalic.ttf",
+      "sha1": "a69b24b77721c0aa1553bd3539d6b788fc356e70"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansLight.ttf",
+      "sha1": "88a3ee8a1a46259fe9f4892f23d08014297f7611"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansLightItalic.ttf",
+      "sha1": "a6615911e17fdc9b789471fd2b3091a37b96e19b"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansMedium.ttf",
+      "sha1": "ebd6cd57605b1da2e00eb90a561d9a7ccfc24c96"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansMediumItalic.ttf",
+      "sha1": "f0f5da467cf791ae86c61d58fc901f6c31b22fe6"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansRegular.ttf",
+      "sha1": "3e68828fc99e64491fdc884241da038f8bba3602"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansSemiBold.ttf",
+      "sha1": "c098c1bd5cae2acc52243233b02e713d1d146fc9"
+    },
+    {
+      "path": "src/assets/fonts/InclusiveSansSemiBoldItalic.ttf",
+      "sha1": "f220cdd3444497fb6406699852722e86d6ab4bf2"
+    }
+  ]
+}

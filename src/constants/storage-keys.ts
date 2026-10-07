@@ -35,6 +35,12 @@ export const STORAGE_KEYS = {
 
   /** Last sync timestamp */
   LAST_SYNC_AT: 'myspendtracker:last-sync-at',
+
+  /** Zustand: incomes list */
+  INCOME: 'myspendtracker:incomes',
+
+  /** Zustand: app settings */
+  SETTINGS: 'myspendtracker:settings',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

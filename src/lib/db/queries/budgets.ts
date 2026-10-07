@@ -161,7 +161,7 @@ export async function updateBudget(
 
   await execute(
     `UPDATE ${TABLES.BUDGETS} SET ${fields.join(', ')} WHERE id = ?`,
-    ...values,
+    values,
   );
 }
 

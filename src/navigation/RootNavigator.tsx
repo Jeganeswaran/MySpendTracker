@@ -1,10 +1,3 @@
-/**
- * MySpendTracker — Root Navigator
- * -------------------------------
- * Switches between Auth and Main flows based on auth state.
- * Hosts modal screens above everything.
- */
-
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '@hooks/useTheme';
@@ -14,33 +7,30 @@ import { AuthNavigator } from './AuthNavigator';
 import { MainTabs } from './MainTabs';
 
 import { AddExpenseScreen } from '@screens/modals/AddExpenseScreen';
+import { AddIncomeScreen } from '@screens/modals/AddIncomeScreen';
 import { SearchScreen } from '@screens/modals/SearchScreen';
 import { NotificationsScreen } from '@screens/modals/NotificationsScreen';
 import { SplashScreen } from '@screens/SplashScreen';
-
+import { CalendarScreen } from '@screens/main/CalendarScreen';
+import { TransactionSettingsScreen } from '@screens/settings/TransactionSettingsScreen';
+import { RepeatSettingsScreen } from '@screens/settings/RepeatSettingsScreen';
+import { IncomeCategoriesScreen } from '@screens/settings/IncomeCategoriesScreen';
+import { ExpenseCategoriesScreen } from '@screens/settings/ExpenseCategoriesScreen';
+import { AccountsScreen } from '@screens/settings/AccountsScreen';
+import { LanguageScreen } from '@screens/settings/LanguageScreen';
 
 import type { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-
-
-// ─────────────────────────────────────────────
-// ROOT NAVIGATOR
-// ─────────────────────────────────────────────
-
 export function RootNavigator() {
     const { colors } = useTheme();
 
-    // Auth state from Zustand (persisted)
     const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
     const isHydrated = useAuthStore((s) => s.isHydrated);
 
-    // ─────────────────────────────────────────────
-    // LOADING SCREEN (while hydrating auth)
-    // ─────────────────────────────────────────────
     if (!isHydrated) {
-        return <SplashScreen message="Loading your data..." />
+        return <SplashScreen message="Loading your data..." />;
     }
 
     return (
@@ -52,7 +42,6 @@ export function RootNavigator() {
             }}
         >
             {isAuthenticated ? (
-                // ─── MAIN FLOW ───
                 <>
                     <Stack.Screen name="Main" component={MainTabs} />
 
@@ -61,30 +50,33 @@ export function RootNavigator() {
                         <Stack.Screen
                             name="AddExpense"
                             component={AddExpenseScreen}
-                            options={{
-                                animation: 'slide_from_bottom',
-                                presentation: 'modal',
-                            }}
+                            options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
+                        />
+                        <Stack.Screen
+                            name="AddIncome"
+                            component={AddIncomeScreen}
+                            options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
                         />
                         <Stack.Screen
                             name="Search"
                             component={SearchScreen}
-                            options={{
-                                animation: 'fade',
-                                presentation: 'modal',
-                            }}
+                            options={{ animation: 'fade', presentation: 'modal' }}
                         />
-                        <Stack.Screen
-                            name="Notifications"
-                            component={NotificationsScreen}
-                            options={{
-                                animation: 'slide_from_right',
-                            }}
-                        />
+                    </Stack.Group>
+
+                    {/* Stack screens — slide from right */}
+                    <Stack.Group screenOptions={{ animation: 'slide_from_right' }}>
+                        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+                        <Stack.Screen name="Calendar" component={CalendarScreen} />
+                        <Stack.Screen name="TransactionSettings" component={TransactionSettingsScreen} />
+                        <Stack.Screen name="RepeatSettings" component={RepeatSettingsScreen} />
+                        <Stack.Screen name="IncomeCategories" component={IncomeCategoriesScreen} />
+                        <Stack.Screen name="ExpenseCategories" component={ExpenseCategoriesScreen} />
+                        <Stack.Screen name="Accounts" component={AccountsScreen} />
+                        <Stack.Screen name="Language" component={LanguageScreen} />
                     </Stack.Group>
                 </>
             ) : (
-                // ─── AUTH FLOW ───
                 <Stack.Screen name="Auth" component={AuthNavigator} />
             )}
         </Stack.Navigator>

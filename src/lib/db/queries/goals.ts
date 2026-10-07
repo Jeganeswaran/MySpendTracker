@@ -169,7 +169,7 @@ export async function updateGoal(
 
   await execute(
     `UPDATE ${TABLES.GOALS} SET ${fields.join(', ')} WHERE id = ?`,
-    ...values,
+    values,
   );
 }
 

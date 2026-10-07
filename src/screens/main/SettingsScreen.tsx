@@ -1,6 +1,8 @@
 import React from 'react';
-import { ScrollView, View, Alert } from 'react-native';
+import { ScrollView, View, Alert, ActionSheetIOS, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@hooks/useTheme';
 import { useAuthStore } from '@stores/useAuthStore';
 import { useThemeStore } from '@stores/useThemeStore';
@@ -13,22 +15,61 @@ import { ProBanner } from '@components/shared/ProBanner';
 
 import {
     DollarSign,
-    Tag,
     Bell,
     Palette,
     Cloud,
-    Wrench,
     LogOut,
     ChevronRight,
+    CalendarClock,
+    Repeat,
+    TrendingUp,
+    Receipt,
+    Wallet,
+    Globe,
 } from 'lucide-react-native';
+import { CURRENCIES } from '@constants/currencies';
+import type { RootStackParamList } from '@navigation/types';
 
 export function SettingsScreen() {
     const { colors, Spacing, Radius } = useTheme();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
     const user = useAuthStore((s) => s.user);
     const logout = useAuthStore((s) => s.logout);
+    const updateUser = useAuthStore((s) => s.updateUser);
+    const updatePreferences = useAuthStore((s) => s.updatePreferences);
     const themeMode = useThemeStore((s) => s.mode);
     const setMode = useThemeStore((s) => s.setMode);
+
+    const remindersEnabled = user?.preferences.notifications.budgetAlerts ?? true;
+    const cloudSyncEnabled = user?.preferences.cloudSync ?? true;
+    const currentCurrency = user?.currency ?? 'USD';
+
+    const handlePickCurrency = () => {
+        const options = CURRENCIES.map((c) => `${c.code} — ${c.name}`);
+        if (Platform.OS === 'ios') {
+            ActionSheetIOS.showActionSheetWithOptions(
+                { options: [...options, 'Cancel'], cancelButtonIndex: options.length },
+                (index) => {
+                    if (index < options.length) {
+                        updateUser({ currency: CURRENCIES[index].code });
+                    }
+                },
+            );
+        } else {
+            Alert.alert(
+                'Select Currency',
+                undefined,
+                [
+                    ...CURRENCIES.map((c) => ({
+                        text: `${c.code} — ${c.name}`,
+                        onPress: () => updateUser({ currency: c.code }),
+                    })),
+                    { text: 'Cancel', style: 'cancel' as const },
+                ],
+            );
+        }
+    };
 
     const handleLogout = () => {
         Alert.alert('Log out', 'Are you sure?', [
@@ -62,7 +103,16 @@ export function SettingsScreen() {
                 </Card>
 
                 {/* Pro Banner */}
-                <ProBanner onPress={() => { }} style={{ marginBottom: Spacing.xl }} />
+                <ProBanner
+                    onPress={() =>
+                        Alert.alert(
+                            'Upgrade to Pro',
+                            'Unlock unlimited budgets, cloud sync, and advanced analytics.',
+                            [{ text: 'Maybe later', style: 'cancel' }, { text: 'Learn more' }],
+                        )
+                    }
+                    style={{ marginBottom: Spacing.xl }}
+                />
 
                 {/* Preferences */}
                 <Text variant="meta" color={colors.textSecondary} style={{ marginBottom: Spacing.sm }}>
@@ -73,15 +123,8 @@ export function SettingsScreen() {
                         icon={<DollarSign size={16} color={colors.primary} />}
                         iconBg={colors.primarySoft}
                         label="Currency"
-                        value="USD"
-                        onPress={() => { }}
-                    />
-                    <Divider />
-                    <SettingsRow
-                        icon={<Tag size={16} color={colors.warning} />}
-                        iconBg={colors.warningSoft}
-                        label="Categories"
-                        onPress={() => { }}
+                        value={currentCurrency}
+                        onPress={handlePickCurrency}
                     />
                     <Divider />
                     <SettingsRow
@@ -90,10 +133,66 @@ export function SettingsScreen() {
                         label="Reminders"
                         right={
                             <Switch
-                                value={true}
-                                onValueChange={() => { }}
+                                value={remindersEnabled}
+                                onValueChange={(v) =>
+                                    updatePreferences({
+                                        notifications: {
+                                            budgetAlerts: v,
+                                            billReminders: v,
+                                            weeklySummary: v,
+                                        },
+                                    })
+                                }
                             />
                         }
+                    />
+                </Card>
+
+                {/* Settings */}
+                <Text variant="meta" color={colors.textSecondary} style={{ marginBottom: Spacing.sm }}>
+                    SETTINGS
+                </Text>
+                <Card style={{ marginBottom: Spacing.lg, padding: 0 }}>
+                    <SettingsRow
+                        icon={<CalendarClock size={16} color={colors.primary} />}
+                        iconBg={colors.primarySoft}
+                        label="Transaction Settings"
+                        onPress={() => navigation.navigate('TransactionSettings')}
+                    />
+                    <Divider />
+                    <SettingsRow
+                        icon={<Repeat size={16} color={colors.warning} />}
+                        iconBg={colors.warningSoft}
+                        label="Repeat Settings"
+                        onPress={() => navigation.navigate('RepeatSettings')}
+                    />
+                    <Divider />
+                    <SettingsRow
+                        icon={<TrendingUp size={16} color={colors.success} />}
+                        iconBg={colors.successSoft}
+                        label="Income Categories"
+                        onPress={() => navigation.navigate('IncomeCategories')}
+                    />
+                    <Divider />
+                    <SettingsRow
+                        icon={<Receipt size={16} color={colors.danger} />}
+                        iconBg={colors.dangerSoft}
+                        label="Expense Categories"
+                        onPress={() => navigation.navigate('ExpenseCategories')}
+                    />
+                    <Divider />
+                    <SettingsRow
+                        icon={<Wallet size={16} color={colors.info} />}
+                        iconBg={colors.infoSoft}
+                        label="Accounts"
+                        onPress={() => navigation.navigate('Accounts')}
+                    />
+                    <Divider />
+                    <SettingsRow
+                        icon={<Globe size={16} color={colors.textSecondary} />}
+                        iconBg={colors.cardAlt}
+                        label="Language"
+                        onPress={() => navigation.navigate('Language')}
                     />
                 </Card>
 
@@ -117,14 +216,12 @@ export function SettingsScreen() {
                         icon={<Cloud size={16} color={colors.info} />}
                         iconBg={colors.infoSoft}
                         label="Cloud Backups"
-                        right={<Switch value={true} onValueChange={() => { }} />}
-                    />
-                    <Divider />
-                    <SettingsRow
-                        icon={<Wrench size={16} color={colors.textSecondary} />}
-                        iconBg={colors.cardAlt}
-                        label="Advanced Settings"
-                        onPress={() => { }}
+                        right={
+                            <Switch
+                                value={cloudSyncEnabled}
+                                onValueChange={(v) => updatePreferences({ cloudSync: v })}
+                            />
+                        }
                     />
                 </Card>
 

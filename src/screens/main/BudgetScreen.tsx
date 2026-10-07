@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@hooks/useTheme';
 import { useBudgetStore } from '@stores/useBudgetStore';
 import { useGoalStore } from '@stores/useGoalStore';
+import type { RootStackParamList } from '@navigation/types';
 
 import { Text } from '@components/ui/Text';
 import { IconButton } from '@components/ui/IconButton';
@@ -16,13 +19,18 @@ import { getBudgetSummary } from '@utils/calculations';
 import { formatCurrency } from '@utils/formatCurrency';
 import { formatMonthKey } from '@utils/formatDate';
 
+type RootNav = NativeStackNavigationProp<RootStackParamList>;
+
 export function BudgetScreen() {
     const { colors, Spacing, Radius } = useTheme();
+    const navigation = useNavigation<RootNav>();
 
     const budgets = useBudgetStore((s) => s.budgets);
     const goals = useGoalStore((s) => s.goals);
+    const [showAllGoals, setShowAllGoals] = useState(false);
 
     const summary = getBudgetSummary(budgets);
+    const visibleGoals = showAllGoals ? goals : goals.slice(0, 2);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top']}>
@@ -44,7 +52,7 @@ export function BudgetScreen() {
                     <IconButton
                         variant="filled"
                         icon={<Plus size={18} color="#FFF" />}
-                        onPress={() => { }}
+                        onPress={() => navigation.navigate('AddExpense')}
                     />
                 </View>
 
@@ -106,12 +114,17 @@ export function BudgetScreen() {
                     }}
                 >
                     <Text variant="h3">Goals</Text>
-                    <Text variant="caption" color={colors.primary} weight="semibold">
-                        View All
+                    <Text
+                        variant="caption"
+                        color={colors.primary}
+                        weight="semibold"
+                        onPress={() => setShowAllGoals((v) => !v)}
+                    >
+                        {showAllGoals ? 'Show Less' : 'View All'}
                     </Text>
                 </View>
 
-                {goals.slice(0, 2).map((goal) => (
+                {visibleGoals.map((goal) => (
                     <GoalCard key={goal.id} goal={goal} style={{ marginBottom: Spacing.md }} />
                 ))}
 

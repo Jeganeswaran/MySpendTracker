@@ -8,7 +8,7 @@
  *   if (__DEV__) await seedIfEmpty();
  */
 
-import { queryOne, execute, getDB } from './client';
+import { queryOne, execute } from './client';
 import { TABLES } from './schema';
 import { insertManyExpenses, getExpensesCount } from './queries/expenses';
 import { insertBudget, getBudgetsByMonth } from './queries/budgets';
@@ -369,14 +369,10 @@ async function seedGoals(): Promise<void> {
 export async function reseed(): Promise<void> {
   if (!__DEV__) throw new Error('reseed is dev-only');
 
-  const db = await getDB();
-
-  await db.executeSql(`
-    DELETE FROM ${TABLES.EXPENSES};
-    DELETE FROM ${TABLES.BUDGETS};
-    DELETE FROM ${TABLES.GOALS};
-    DELETE FROM ${TABLES.META};
-  `);
+  await execute(`DELETE FROM ${TABLES.EXPENSES}`);
+  await execute(`DELETE FROM ${TABLES.BUDGETS}`);
+  await execute(`DELETE FROM ${TABLES.GOALS}`);
+  await execute(`DELETE FROM ${TABLES.META}`);
 
   await seedIfEmpty({ force: true });
 }

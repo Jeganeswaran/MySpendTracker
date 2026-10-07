@@ -9,7 +9,7 @@ import { Text } from '@components/ui/Text';
 import { Chip } from '@components/ui/Chip';
 import { IconButton } from '@components/ui/IconButton';
 import { TransactionItem } from '@components/shared/TransactionItem';
-import { Plus, Search } from 'lucide-react-native';
+import { Plus, Search, CalendarDays } from 'lucide-react-native';
 
 import { formatDate, getDateGroupLabel } from '@utils/formatDate';
 import { groupBy } from '@utils/array';
@@ -31,9 +31,26 @@ export function TransactionsScreen() {
     const [filter, setFilter] = useState<Filter>('all');
     const expenses = useExpenseStore((s) => s.expenses);
 
-    // Group by date
+    const filteredExpenses = useMemo(() => {
+        if (filter === 'all') return expenses;
+        const today = new Date();
+        const todayISO = today.toISOString().slice(0, 10);
+        if (filter === 'today') {
+            return expenses.filter((e) => e.date === todayISO);
+        }
+        if (filter === 'week') {
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - 6);
+            const weekStartISO = weekStart.toISOString().slice(0, 10);
+            return expenses.filter((e) => e.date >= weekStartISO);
+        }
+        // month
+        const monthKey = todayISO.slice(0, 7);
+        return expenses.filter((e) => e.date.startsWith(monthKey));
+    }, [expenses, filter]);
+
     const sections = useMemo(() => {
-        const grouped = groupBy(expenses, (e) => e.date);
+        const grouped = groupBy(filteredExpenses, (e) => e.date);
         return Object.entries(grouped)
             .sort(([a], [b]) => (a > b ? -1 : 1))
             .map(([date, items]) => ({
@@ -41,9 +58,9 @@ export function TransactionsScreen() {
                 total: sum(items),
                 data: items,
             }));
-    }, [expenses]);
+    }, [filteredExpenses]);
 
-    const total = sum(expenses);
+    const total = sum(filteredExpenses);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top']}>
@@ -59,6 +76,10 @@ export function TransactionsScreen() {
             >
                 <Text variant="h1">Transactions</Text>
                 <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
+                    <IconButton
+                        icon={<CalendarDays size={18} color={colors.text} />}
+                        onPress={() => navigation.navigate('Calendar')}
+                    />
                     <IconButton
                         icon={<Search size={18} color={colors.text} />}
                         onPress={() => navigation.navigate('Search')}

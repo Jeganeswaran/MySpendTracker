@@ -1,33 +1,22 @@
-/**
- * MySpendTracker — Main Tabs
- * --------------------------
- * Bottom tab bar with Home, Transactions, Budget, Settings.
- * Includes the floating + button and search/notification headers.
- */
-
 import React from 'react';
 import { View, Pressable } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Home, BarChart3, Target, Settings as SettingsIcon, } from 'lucide-react-native';
+import { Home, BarChart3, PieChart, Settings as SettingsIcon } from 'lucide-react-native';
 
 import { useTheme } from '@hooks/useTheme';
 import { FAB } from '@components/shared/FAB';
 
 import { HomeScreen } from '@screens/main/HomeScreen';
 import { TransactionsScreen } from '@screens/main/TransactionsScreen';
-import { BudgetScreen } from '@screens/main/BudgetScreen';
+import { AnalyticsScreen } from '@screens/main/AnalyticsScreen';
 import { SettingsScreen } from '@screens/main/SettingsScreen';
 
 import type { MainTabParamList, RootStackParamList } from './types';
 import { Text } from '@components/ui';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
-
-// ─────────────────────────────────────────────
-// CUSTOM TAB BAR with FAB
-// ─────────────────────────────────────────────
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -38,7 +27,7 @@ function CustomTabBar({ state, navigation }: any) {
     const tabs = [
         { key: 'Home', label: 'Home', Icon: Home },
         { key: 'Transactions', label: 'Report', Icon: BarChart3 },
-        { key: 'Budget', label: 'Plan', Icon: Target },
+        { key: 'Analytics', label: 'Stats', Icon: PieChart },
         { key: 'Settings', label: 'Settings', Icon: SettingsIcon },
     ];
 
@@ -67,7 +56,6 @@ function CustomTabBar({ state, navigation }: any) {
                     }
                 };
 
-                // Insert FAB in the middle
                 if (index === 2) {
                     return (
                         <React.Fragment key={route.key}>
@@ -110,7 +98,6 @@ interface TabButtonProps {
 }
 
 function TabButton({ label, color, Icon, onPress }: TabButtonProps) {
-
     return (
         <Pressable
             onPress={onPress}
@@ -131,10 +118,6 @@ function TabButton({ label, color, Icon, onPress }: TabButtonProps) {
     );
 }
 
-// ─────────────────────────────────────────────
-// MAIN TABS
-// ─────────────────────────────────────────────
-
 export function MainTabs() {
     const { colors } = useTheme();
 
@@ -148,7 +131,7 @@ export function MainTabs() {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Transactions" component={TransactionsScreen} />
-            <Tab.Screen name="Budget" component={BudgetScreen} />
+            <Tab.Screen name="Analytics" component={AnalyticsScreen} />
             <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
     );

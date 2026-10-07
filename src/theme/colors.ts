@@ -256,8 +256,8 @@ export const LightColors = {
   healthTint: Palette.green50,
   entertainment: Palette.red500,
   entertainmentTint: Palette.red50,
-  education: Palette.green500,
-  educationTint: Palette.green50,
+  education: Palette.pink500,
+  educationTint: Palette.pink50,
   other: Palette.gray600,
   otherTint: Palette.gray200,
 
@@ -309,9 +309,9 @@ export const DarkColors = {
   // — Text —
   text: Palette.white,
   textSecondary: Palette.gray600,
-  textTertiary: Palette.gray800,
+  textTertiary: Palette.gray700,
   textInverse: Palette.gray900,
-  textDisabled: Palette.gray700,
+  textDisabled: Palette.gray800,
 
   // — Borders & Dividers —
   border: '#2C2C2E',
@@ -357,8 +357,8 @@ export const DarkColors = {
   healthTint: 'rgba(34, 197, 94, 0.15)',
   entertainment: Palette.red400,
   entertainmentTint: 'rgba(239, 68, 68, 0.15)',
-  education: Palette.green400,
-  educationTint: 'rgba(34, 197, 94, 0.15)',
+  education: Palette.pink400,
+  educationTint: 'rgba(236, 72, 153, 0.15)',
   other: Palette.gray600,
   otherTint: 'rgba(142, 142, 147, 0.15)',
 

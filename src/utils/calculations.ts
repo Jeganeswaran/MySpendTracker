@@ -7,7 +7,7 @@
 import type { Expense, ExpenseSummary } from '@app-types/expense';
 import type { Income, IncomeSummary } from '@app-types/income';
 import type { Budget, BudgetSummary } from '@app-types/budget';
-import type { CategoryType } from '@app-types/category';
+import type { CategoryType, IncomeCategoryType } from '@app-types/category';
 import type { Goal, GoalProgress } from '@app-types/goal';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 
@@ -94,7 +94,7 @@ export function getIncomeSummary(incomes: Income[]): IncomeSummary {
     total: sum(incomes),
     count: incomes.length,
     average: average(incomes),
-    byCategory: groupByCategory(incomes) as Record<CategoryType, number>,
+    byCategory: groupByCategory(incomes) as Record<IncomeCategoryType, number>,
     period: {
       start: incomes[0]?.date ?? '',
       end: incomes[incomes.length - 1]?.date ?? '',
@@ -155,8 +155,12 @@ export function getGoalProgress(goal: Goal): GoalProgress {
   if (percent >= 100) status = 'completed';
   else if (daysLeft < 0) status = 'behind';
   else {
-    // Expected progress vs actual
-    const expectedPercent = 100 - (daysLeft / 30) * 100; // rough estimate
+    const totalDays = differenceInCalendarDays(
+      parseISO(goal.deadline),
+      parseISO(goal.createdAt),
+    );
+    const expectedPercent =
+      totalDays > 0 ? ((totalDays - daysLeft) / totalDays) * 100 : 100;
     if (percent > expectedPercent + 10) status = 'ahead';
     else if (percent < expectedPercent - 10) status = 'behind';
   }

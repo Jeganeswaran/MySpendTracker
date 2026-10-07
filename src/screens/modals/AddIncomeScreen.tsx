@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { RouteProp } from '@react-navigation/native';
 
 import { useTheme } from '@hooks/useTheme';
-import { useExpenseStore } from '@stores/useExpenseStore';
+import { useIncomeStore } from '@stores/useIncomeStore';
 import { useToastStore } from '@stores/useToastStore';
 import { Text } from '@components/ui/Text';
 import { Button } from '@components/ui/Button';
@@ -13,37 +13,37 @@ import { IconButton } from '@components/ui/IconButton';
 import { Input } from '@components/ui/Input';
 
 import { X, Delete, Trash2 } from 'lucide-react-native';
-import { EXPENSE_CATEGORIES } from '@constants/categories';
+import { INCOME_CATEGORIES } from '@constants/categories';
 import { getTodayISO } from '@utils/formatDate';
-import type { CategoryType } from '@app-types/category';
+import type { IncomeCategoryType } from '@app-types/category';
 import type { RootStackParamList } from '@navigation/types';
 
-type AddExpenseRouteProp = RouteProp<RootStackParamList, 'AddExpense'>;
+type AddIncomeRouteProp = RouteProp<RootStackParamList, 'AddIncome'>;
 
-export function AddExpenseScreen() {
+export function AddIncomeScreen() {
     const { colors, Spacing, Radius } = useTheme();
     const navigation = useNavigation();
-    const route = useRoute<AddExpenseRouteProp>();
+    const route = useRoute<AddIncomeRouteProp>();
 
-    const expenseId = route.params?.expenseId;
-    const existingExpense = useExpenseStore((s) =>
-        expenseId ? s.expenses.find((e) => e.id === expenseId) : undefined,
+    const incomeId = route.params?.incomeId;
+    const existingIncome = useIncomeStore((s) =>
+        incomeId ? s.incomes.find((i) => i.id === incomeId) : undefined,
     );
-    const isEditing = !!existingExpense;
+    const isEditing = !!existingIncome;
 
-    const addExpense = useExpenseStore((s) => s.addExpense);
-    const updateExpense = useExpenseStore((s) => s.updateExpense);
-    const removeExpense = useExpenseStore((s) => s.removeExpense);
+    const addIncome = useIncomeStore((s) => s.addIncome);
+    const updateIncome = useIncomeStore((s) => s.updateIncome);
+    const removeIncome = useIncomeStore((s) => s.removeIncome);
     const toast = useToastStore();
 
     const [amount, setAmount] = useState(
-        existingExpense ? String(existingExpense.amount) : '0',
+        existingIncome ? String(existingIncome.amount) : '0',
     );
-    const [category, setCategory] = useState<CategoryType>(
-        existingExpense?.category ?? route.params?.category ?? 'food',
+    const [category, setCategory] = useState<IncomeCategoryType>(
+        existingIncome?.category ?? 'salary',
     );
-    const [title, setTitle] = useState(existingExpense?.title ?? '');
-    const [note, setNote] = useState(existingExpense?.note ?? '');
+    const [title, setTitle] = useState(existingIncome?.title ?? '');
+    const [note, setNote] = useState(existingIncome?.note ?? '');
 
     const handleKey = (key: string) => {
         if (key === '⌫') {
@@ -66,36 +66,36 @@ export function AddExpenseScreen() {
         }
 
         if (isEditing) {
-            updateExpense(expenseId!, {
+            updateIncome(incomeId!, {
                 title: title.trim(),
                 amount: numAmount,
                 category,
                 note: note.trim() || undefined,
             });
-            toast.success('Expense updated!');
+            toast.success('Income updated!');
         } else {
-            addExpense({
+            addIncome({
                 title: title.trim(),
                 amount: numAmount,
                 category,
                 date: getTodayISO(),
                 note: note.trim() || undefined,
             });
-            toast.success('Expense saved!');
+            toast.success('Income saved!');
         }
 
         navigation.goBack();
     };
 
     const handleDelete = () => {
-        Alert.alert('Delete expense', 'Are you sure?', [
+        Alert.alert('Delete income', 'Are you sure?', [
             { text: 'Cancel', style: 'cancel' },
             {
                 text: 'Delete',
                 style: 'destructive',
                 onPress: () => {
-                    removeExpense(expenseId!);
-                    toast.success('Expense deleted');
+                    removeIncome(incomeId!);
+                    toast.success('Income deleted');
                     navigation.goBack();
                 },
             },
@@ -121,7 +121,7 @@ export function AddExpenseScreen() {
                     onPress={() => navigation.goBack()}
                 />
                 <Text variant="body" weight="bold">
-                    {isEditing ? 'Edit Expense' : 'Add Expense'}
+                    {isEditing ? 'Edit Income' : 'Add Income'}
                 </Text>
                 {isEditing ? (
                     <IconButton
@@ -141,14 +141,14 @@ export function AddExpenseScreen() {
                 {/* Amount Card */}
                 <View
                     style={{
-                        backgroundColor: colors.primarySoft,
+                        backgroundColor: colors.successSoft,
                         borderRadius: Radius['3xl'],
                         paddingVertical: Spacing['2xl'],
                         alignItems: 'center',
                         marginBottom: Spacing.xl,
                     }}
                 >
-                    <Text variant="meta" color={colors.primary} weight="bold">
+                    <Text variant="meta" color={colors.success} weight="bold">
                         AMOUNT
                     </Text>
                     <View
@@ -159,8 +159,8 @@ export function AddExpenseScreen() {
                             marginTop: Spacing.sm,
                         }}
                     >
-                        <Text variant="h2" color={colors.primary} style={{ marginTop: 6 }}>$</Text>
-                        <Text variant="hero" weight="bold">{amount}</Text>
+                        <Text variant="h2" color={colors.success} style={{ marginTop: 6 }}>$</Text>
+                        <Text variant="hero" weight="bold" color={colors.success}>{amount}</Text>
                     </View>
                 </View>
 
@@ -176,26 +176,26 @@ export function AddExpenseScreen() {
                         marginBottom: Spacing.xl,
                     }}
                 >
-                    {EXPENSE_CATEGORIES.map((cat) => {
+                    {INCOME_CATEGORIES.map((cat) => {
                         const active = cat.key === category;
                         return (
                             <Pressable
                                 key={cat.key}
-                                onPress={() => setCategory(cat.key as CategoryType)}
+                                onPress={() => setCategory(cat.key as IncomeCategoryType)}
                                 style={{
                                     width: '23%',
                                     aspectRatio: 1,
                                     borderRadius: Radius['2xl'],
-                                    backgroundColor: active ? colors.primarySoft : colors.card,
+                                    backgroundColor: active ? colors.successSoft : colors.card,
                                     borderWidth: 2,
-                                    borderColor: active ? colors.primary : colors.border,
+                                    borderColor: active ? colors.success : colors.border,
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     gap: 4,
                                 }}
                             >
                                 <Text style={{ fontSize: 22 }}>{cat.emoji}</Text>
-                                <Text variant="label" color={active ? colors.primary : colors.text}>
+                                <Text variant="label" color={active ? colors.success : colors.text}>
                                     {cat.label}
                                 </Text>
                             </Pressable>
@@ -207,7 +207,7 @@ export function AddExpenseScreen() {
                 <View style={{ gap: Spacing.md, marginBottom: Spacing.xl }}>
                     <Input
                         label="Title"
-                        placeholder="e.g. Coffee at Starbucks"
+                        placeholder="e.g. Monthly salary"
                         value={title}
                         onChangeText={setTitle}
                     />
@@ -263,7 +263,7 @@ export function AddExpenseScreen() {
                 }}
             >
                 <Button
-                    label={isEditing ? 'Save Changes' : 'Save Expense'}
+                    label={isEditing ? 'Save Changes' : 'Save Income'}
                     onPress={handleSave}
                     fullWidth
                     size="lg"
@@ -273,4 +273,4 @@ export function AddExpenseScreen() {
     );
 }
 
-export default AddExpenseScreen;
+export default AddIncomeScreen;

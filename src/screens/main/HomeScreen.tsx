@@ -7,6 +7,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '@hooks/useTheme';
 import { useExpenseStore } from '@stores/useExpenseStore';
 import { useAuthStore } from '@stores/useAuthStore';
+import { useBudgetStore } from '@stores/useBudgetStore';
 
 import { Text } from '@components/ui/Text';
 import { IconButton } from '@components/ui/IconButton';
@@ -30,15 +31,16 @@ export function HomeScreen() {
 
     const user = useAuthStore((s) => s.user);
     const expenses = useExpenseStore((s) => s.expenses);
+    const budgetSummary = useBudgetStore((s) => s.getSummary());
 
     const today = getTodayISO();
     const todayExpenses = expenses.filter((e) => e.date === today);
     const summary = getExpenseSummary(expenses);
     const topCategories = getTopCategories(expenses, 3);
 
-    const balance = 12450.8; // ← from a wallet store
-    const monthlyBudget = 3800;
-    const monthSpent = sum(expenses);
+    const balance = 12450.8; // TODO: replace with wallet store when available
+    const monthlyBudget = budgetSummary.totalLimit;
+    const monthSpent = budgetSummary.totalSpent;
 
     const [refreshing, setRefreshing] = React.useState(false);
 

@@ -17,3 +17,4 @@ export * from './user';
 export * from './navigation';
 export * from './api';
 export * from './ui';
+export * from './settings';

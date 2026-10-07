@@ -1,10 +1,3 @@
-/**
- * MySpendTracker — Navigation Param Lists
- * ---------------------------------------
- * Central registry of every screen + its params.
- * Use these types everywhere instead of `any`.
- */
-
 import type { NavigatorScreenParams } from '@react-navigation/native';
 import type { CategoryType } from '@app-types/category';
 
@@ -13,16 +6,27 @@ import type { CategoryType } from '@app-types/category';
 // ─────────────────────────────────────────────
 
 export type RootStackParamList = {
-  // Auth flow
   Auth: NavigatorScreenParams<AuthStackParamList>;
-
-  // Main app (tabs)
   Main: NavigatorScreenParams<MainTabParamList>;
 
-  // Modals (rendered above tabs)
+  // Expense modals
   AddExpense: { expenseId?: string; category?: CategoryType } | undefined;
   Search: undefined;
   Notifications: undefined;
+
+  // Income modal
+  AddIncome: { incomeId?: string } | undefined;
+
+  // Calendar
+  Calendar: undefined;
+
+  // Settings sub-screens
+  TransactionSettings: undefined;
+  RepeatSettings: undefined;
+  IncomeCategories: undefined;
+  ExpenseCategories: undefined;
+  Accounts: undefined;
+  Language: undefined;
 };
 
 // ─────────────────────────────────────────────
@@ -42,13 +46,12 @@ export type AuthStackParamList = {
 export type MainTabParamList = {
   Home: undefined;
   Transactions: { filter?: string } | undefined;
-  Budget: undefined;
+  Analytics: undefined;
   Settings: undefined;
 };
 
 // ─────────────────────────────────────────────
 // 4. GLOBAL AUGMENTATION
-//    Gives `useNavigation()` full autocomplete everywhere.
 // ─────────────────────────────────────────────
 
 declare global {

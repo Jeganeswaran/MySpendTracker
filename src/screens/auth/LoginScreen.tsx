@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -114,7 +114,13 @@ export function LoginScreen() {
                         color={colors.primary}
                         weight="semibold"
                         align="right"
-                        onPress={() => { }}
+                        onPress={() =>
+                            Alert.alert(
+                                'Reset Password',
+                                'A password reset link will be sent to your email address.',
+                                [{ text: 'OK' }],
+                            )
+                        }
                     >
                         Forgot password?
                     </Text>

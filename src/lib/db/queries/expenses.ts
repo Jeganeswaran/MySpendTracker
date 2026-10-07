@@ -220,7 +220,7 @@ export async function updateExpense(
 
   await execute(
     `UPDATE ${TABLES.EXPENSES} SET ${fields.join(', ')} WHERE id = ?`,
-    ...values,
+    values,
   );
 }
 

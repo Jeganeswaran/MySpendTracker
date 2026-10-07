@@ -18,6 +18,8 @@ export {
 } from './useOnboardingStore';
 export { useThemeStore } from './useThemeStore';
 export { useToastStore } from './useToastStore';
+export { useIncomeStore } from './useIncomeStore';
+export { useSettingsStore } from './useSettingsStore';
 
 // Types
 export type { NewExpenseInput, UpdateExpenseInput } from './useExpenseStore';
@@ -25,6 +27,7 @@ export type { NewBudgetInput } from './useBudgetStore';
 export type { NewGoalInput } from './useGoalStore';
 export type { ThemeMode } from './useThemeStore';
 export type { ToastMessage, ToastVariant } from './useToastStore';
+export type { NewIncomeInput, UpdateIncomeInput } from './useIncomeStore';
 
 // Selectors
 export { selectExpenseCount, selectRecentExpenses } from './useExpenseStore';
@@ -33,3 +36,4 @@ export {
   selectIsPro,
   selectUserPreferences,
 } from './useAuthStore';
+export { selectIncomeCount } from './useIncomeStore';
